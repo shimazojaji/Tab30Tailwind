@@ -1,0 +1,1780 @@
+<!--  -->
+<!DOCTYPE html>
+<html lang="en" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./build/tailwind.css" />
+    <script
+      src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.3.5/dist/alpine.min.js"
+      defer
+    ></script>
+
+    <title>Tabsi Demo</title>
+  </head>
+  <body class="bg-white box-border">
+    <div class="container mx-auto">
+      <!-- Header -->
+      <header class="bg-white mt-10 mb-8 md:sticky md:top-0 md:left-0 md:z-10">
+        <nav
+          x-data="{ isOpen: false }"
+          class="flex items-center justify-between flex-wrap p-3 w-full lg:p-6"
+          @keydown.escape="isOpen = false"
+          :class="{ 'shadow-lg bg-white' : isOpen , 'bg-white' : !isOpen}"
+        >
+          <!-- Tab30 logo -->
+          <div class="flex items-center flex-shrink-0 text-white">
+            <a href="#"
+              ><svg
+                class="w-20 h-9"
+                viewBox="0 0 102 22"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M102 5.946H98.778V10.226H91.8V5.946H88.579V10.226H82.942C82.4448 10.2263 81.9678 10.0293 81.6155 9.67842C81.2633 9.3275 81.0646 8.85121 81.063 8.354V5.946H77.842V8.354C77.8407 8.85138 77.6421 9.32793 77.2898 9.67907C76.9376 10.0302 76.4604 10.2273 75.963 10.227C75.4656 10.2273 74.9885 10.0302 74.6362 9.67907C74.2839 9.32793 74.0853 8.85138 74.084 8.354V5.946H70.863V8.354C70.8617 8.85138 70.6631 9.32793 70.3108 9.67907C69.9586 10.0302 69.4814 10.2273 68.984 10.227H67.105V5.946H63.885V10.226H46.705V13.438H50.463V13.973C50.463 16.629 48.296 18.789 45.632 18.789C42.968 18.789 40.8 16.629 40.8 13.973V10.227H37.58V13.973C37.58 18.399 41.193 22 45.633 22C50.073 22 53.685 18.4 53.685 13.973V13.438H68.985C70.2814 13.4388 71.5293 12.9449 72.474 12.057C73.4191 12.9447 74.6674 13.4383 75.964 13.437C77.2603 13.4381 78.5082 12.9445 79.453 12.057C80.3978 12.9446 81.6457 13.4382 82.942 13.437H102V5.947V5.946Z"
+                  class="fill-black"
+                />
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M84.702 19.297H88.556V22H91.86V16.054H84.702V19.297ZM102 0H95.439V2.973H102V0Z"
+                  class="fill-black"
+                />
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M26.842 11.297H10.737V5.946H26.842V11.297ZM26.842 22H0V16.649H26.842V22Z"
+                  class="fill-[#FF5B35]"
+                /></svg
+            ></a>
+          </div>
+
+          <!--Toggle button (hidden on large screens)-->
+          <button
+            @click="isOpen = !isOpen"
+            type="button"
+            class="block lg:hidden px-2 text-black"
+            :class="{ 'transition transform-180': isOpen }"
+          >
+            <svg
+              class="h-6 w-6 fill-current"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+            >
+              <path
+                x-show="isOpen"
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="M18.278 16.864a1 1 0 0 1-1.414 1.414l-4.829-4.828-4.828 4.828a1 1 0 0 1-1.414-1.414l4.828-4.829-4.828-4.828a1 1 0 0 1 1.414-1.414l4.829 4.828 4.828-4.828a1 1 0 1 1 1.414 1.414l-4.828 4.829 4.828 4.828z"
+              />
+              <path
+                x-show="!isOpen"
+                fill-rule="evenodd"
+                d="M4 5h16a1 1 0 0 1 0 2H4a1 1 0 1 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2z"
+              />
+            </svg>
+          </button>
+          <!--Menu-->
+          <div
+            class="w-full flex-grow lg:flex lg:items-center lg:w-auto"
+            :class="{ 'block shadow-3xl': isOpen, 'hidden': !isOpen }"
+            @click.away="isOpen = false"
+            x-show.transition="true"
+          >
+            <ul
+              class="pt-6 list-reset flex-1 justify-end items-center lg:pt-0 lg:flex"
+            >
+              <li class="ml-3">
+                <a
+                  class="inline-block py-2 px-4 hover:text-orange-600"
+                  href="#"
+                  @click="isOpen = false"
+                  >پشتیبانی
+                </a>
+              </li>
+              <li class="ml-3">
+                <a
+                  class="inline-block hover:text-orange-600 py-2 px-4"
+                  href="#"
+                  @click="isOpen = false"
+                  >خدمات کسب و کار
+                </a>
+              </li>
+              <li class="ml-3">
+                <a
+                  class="inline-block py-2 px-4 hover:text-orange-600 hover:text-underline"
+                  href="#"
+                  @click="isOpen = false"
+                  >فرصت‌های شغلی
+                </a>
+              </li>
+              <li class="ml-3">
+                <a
+                  class="inline-block py-2 px-4 hover:text-orange-600 hover:text-underline"
+                  href="#"
+                  @click="isOpen = false"
+                  >وبلاگ
+                </a>
+              </li>
+              <li
+                class="rounded-lg bg-orange-600 text-sm text-white px-10 py-2 text-center cursor-pointer"
+              >
+                <a class="block" href="#" @click="isOpen = false"
+                  >دانلود تپسی</a
+                >
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </header>
+
+      <!-- Hero section -->
+
+      <section
+        class="relative w-full flex items-center justify-center lg:w-11/12 lg:mx-auto"
+      >
+        <img
+          class="hidden w-full rounded-[20%/40px] lg:flex"
+          src="/assets/image/banner.jpg"
+          alt=""
+        />
+
+        <img
+          class="w-full object-cover lg:hidden"
+          src="/assets/image/banner-mobile.jpg"
+          alt=""
+        />
+
+        <div
+          class="bg-[#171A3CB2] bg-gradient-to-r rounded-2xl flex flex-col items-center gap-y-5 p-5 absolute md:w-[480px] lg:right-10"
+        >
+          <h1 class="font-bold text-xl text-white self-start md:text-3xl">
+            تپسی
+          </h1>
+          <h2 class="text-sm text-white self-start md:text-2xl">
+            اپلیکیشن درخواست خودرو و پیک
+          </h2>
+          <div
+            class="flex flex-col gap-y-4 items-center md:grid md:grid-cols-2 md:gap-5"
+          >
+            <span
+              class="bg-white w-full py-3 px-3 rounded-xl inline-flex items-center gap-x-1"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                class="h-5 w-5 animate-bounce animation-delay-50"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M10.5 3.75a6 6 0 00-5.98 6.496A5.25 5.25 0 006.75 20.25H18a4.5 4.5 0 002.206-8.423 3.75 3.75 0 00-4.133-4.303A6.001 6.001 0 0010.5 3.75zm2.25 6a.75.75 0 00-1.5 0v4.94l-1.72-1.72a.75.75 0 00-1.06 1.06l3 3a.75.75 0 001.06 0l3-3a.75.75 0 10-1.06-1.06l-1.72 1.72V9.75z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+
+              <p
+                class="w-full text-sm font-medium text-center hover:opacity-50 md:text-base"
+              >
+                دانلود اپلیکیشن مسافران
+              </p>
+            </span>
+
+            <span
+              class="bg-white py-3 px-3 w-full rounded-xl inline-flex items-center gap-x-1 text-center"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-5 w-5 animate-bounce animation-delay-50"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+              <p
+                class="text-sm w-full text-center font-medium hover:opacity-50 md:text-base"
+              >
+                وب اپلیکیشن مسافران
+              </p>
+            </span>
+            <span
+              class="text-white border-white w-full border-2 py-3 px-3 rounded-xl inline-flex items-center gap-x-1 overflow-hidden"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                class="h-5 w-5 animate-bounce animation-delay-50"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M5.5 17a4.5 4.5 0 01-1.44-8.765 4.5 4.5 0 018.302-3.046 3.5 3.5 0 014.504 4.272A4 4 0 0115 17H5.5zm5.25-9.25a.75.75 0 00-1.5 0v4.59l-1.95-2.1a.75.75 0 10-1.1 1.02l3.25 3.5a.75.75 0 001.1 0l3.25-3.5a.75.75 0 10-1.1-1.02l-1.95 2.1V7.75z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+
+              <p
+                class="text-white text-sm font-medium text-center md:text-base"
+              >
+                دانلود اپلیکیشن رانندگان
+              </p>
+            </span>
+            <span
+              class="text-white w-full border-white border-2 py-2 px-3 rounded-xl inline-flex items-center gap-x-2"
+            >
+              <svg
+                class="h-5 w-5 animate-bounce animation-delay-50"
+                viewBox="0 0 512 384"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M439.656 112.186L439.781 112.5H440.12H499.99C507.475 112.5 512.966 119.534 511.155 126.789L505.155 150.789L505.155 150.789C503.88 155.906 499.281 159.5 494 159.5H473.93H472.598L473.601 160.376C486.921 172.019 495.5 188.935 495.5 208V256C495.5 271.999 489.391 286.434 479.624 297.601L479.5 297.742V297.93V352C479.5 369.394 465.394 383.5 448 383.5H416C398.606 383.5 384.5 369.394 384.5 352V320V319.5H384H128H127.5V320V352C127.5 369.394 113.394 383.5 96 383.5H64C46.6061 383.5 32.5 369.394 32.5 352V297.93V297.742L32.3765 297.601C22.6091 286.424 16.5 271.989 16.5 256V208C16.5 188.935 25.0793 172.019 38.4089 160.377L39.4125 159.5H38.08H18.01C12.7294 159.5 8.12963 155.906 6.85518 150.789L6.85507 150.789L0.855071 126.789L0.854958 126.788C-0.965701 119.534 4.52504 112.5 12.01 112.5H71.87H72.2085L72.3342 112.186L88.9742 70.5857C106.008 28.0056 146.644 0.5 192.5 0.5H319.5C365.366 0.5 405.992 28.0055 423.016 70.5856L423.48 70.4L423.016 70.5857L439.656 112.186ZM147.466 93.9843L147.93 94.17L147.466 93.9843L127.536 143.814L127.262 144.5H128H384H384.739L384.464 143.814L364.534 93.9843C357.168 75.5744 339.334 63.5 319.5 63.5H192.5C172.666 63.5 154.832 75.5744 147.466 93.9843ZM63.5 223.9C63.5 233.584 66.7404 241.693 72.447 247.382C78.1535 253.07 86.2868 256.3 96 256.3C98.3071 256.3 100.762 256.347 103.296 256.395C111.244 256.546 119.961 256.712 127.282 255.496C132.116 254.693 136.414 253.278 139.512 250.808C142.635 248.317 144.5 244.782 144.5 239.85C144.5 234.948 142.659 229.479 139.637 224.055C136.611 218.625 132.381 213.206 127.553 208.393C122.725 203.581 117.289 199.364 111.842 196.348C106.402 193.334 100.916 191.5 96 191.5C86.2868 191.5 78.1535 194.73 72.447 200.418C66.7404 206.107 63.5 214.216 63.5 223.9ZM367.5 239.85C367.5 244.782 369.365 248.317 372.488 250.808C375.586 253.278 379.884 254.693 384.718 255.496C392.039 256.712 400.756 256.546 408.704 256.395C411.238 256.347 413.693 256.3 416 256.3C425.713 256.3 433.847 253.07 439.553 247.382C445.26 241.693 448.5 233.584 448.5 223.9C448.5 214.216 445.26 206.107 439.553 200.418C433.847 194.73 425.713 191.5 416 191.5C411.084 191.5 405.598 193.334 400.158 196.348C394.711 199.364 389.275 203.581 384.447 208.393C379.619 213.206 375.389 218.625 372.363 224.055C369.341 229.479 367.5 234.948 367.5 239.85Z"
+                  fill="#FBF7F7"
+                  stroke="#131212"
+                />
+              </svg>
+
+              <p
+                class="text-sm font-medium w-full text-center hover:opacity-50 md:text-base"
+              >
+                ثبت نام رانندگان
+              </p>
+            </span>
+          </div>
+        </div>
+        <picture>
+          <source
+            srcset="https://tapsi.ir/images/home/mockup-phone.png"
+            type="image/png"
+          />
+          <source
+            srcset="https://tapsi.ir/images/home/mockup-phone.webp"
+            type="image/webp"
+          />
+          <img
+            class="hidden absolute w-[300px] rounded-lg -bottom-[40%] left-[10%] lg:block"
+            alt="banner-phone"
+          />
+        </picture>
+      </section>
+
+      <!-- services section -->
+      <div x-data="{ tab: 'cc-classic' }">
+        <h2 class="w-11/12 mx-auto text-xl font-bold mt-10 md:mt-48">
+          سرویس های تپسی
+        </h2>
+        <!--Tabs  -->
+        <section class="w-11/12 mx-auto mt-10">
+          <div
+            class="flex items-center justify-between overflow-x-auto overflow-y-hidden lg:overflow-hidden"
+          >
+            <button
+              class="opacity-50"
+              :class="{'active opacity-100': tab === 'cc-classic'}"
+              @click="tab = 'cc-classic'"
+            >
+              <a class="cursor-pointer flex flex-col items-center gap-y-5">
+                <img
+                  class="max-w-[85px]"
+                  src="https://tapsi.ir/images/home/cc-classic.png"
+                  alt="tapsi-classic-icon"
+                />
+                <p class="text-xs">تپسی کلاسیک</p>
+              </a>
+            </button>
+
+            <button
+              class="opacity-50"
+              :class="{'active opacity-100': tab === 'cc-motopeyk'}"
+              @click="tab = 'cc-motopeyk'"
+            >
+              <a class="flex flex-col items-center gap-y-3 cursor-pointer">
+                <img
+                  class="max-w-[85px]"
+                  src="https://tapsi.ir/images/home/cc-motopeyk.png"
+                  alt="motopeyk-icon"
+                />
+                <p class="text-xs">موتوپیک</p>
+              </a>
+            </button>
+
+            <button
+              class="opacity-50"
+              :class="{'active opacity-100': tab === 'cc-autopeyk'}"
+              @click="tab = 'cc-autopeyk'"
+            >
+              <a class="flex flex-col items-center gap-y-3 cursor-pointer">
+                <img
+                  class="max-w-[85px]"
+                  src="https://tapsi.ir/images/home/cc-autopeyk.png"
+                  alt="autopeyk-icon"
+                />
+                <p class="text-xs">اتوپیک</p>
+              </a>
+            </button>
+
+            <button
+              class="opacity-50"
+              :class="{'active opacity-100': tab === 'cc-plus'}"
+              @click="tab = 'cc-plus'"
+            >
+              <a class="flex flex-col items-center gap-y-3 cursor-pointer">
+                <img
+                  class="max-w-[85px]"
+                  src="https://tapsi.ir/images/home/cc-plus.png"
+                  alt="tapsi-plus-icon"
+                />
+                <p class="text-xs">تپسی پلاس</p>
+              </a>
+            </button>
+
+            <button
+              class="opacity-50"
+              :class="{'active opacity-100': tab === 'cc-tel'}"
+              @click="tab = 'cc-tel'"
+            >
+              <a class="flex flex-col items-center gap-y-3 cursor-pointer">
+                <img
+                  class="max-w-[85px]"
+                  src="https://tapsi.ir/images/home/cc-tel.png"
+                  alt="tapsi-tel-icon"
+                />
+                <p class="text-xs">تپسی تلفنی</p>
+              </a>
+            </button>
+
+            <button
+              class="opacity-50"
+              :class="{'active opacity-100': tab === 'cc-hamyar'}"
+              @click="tab = 'cc-hamyar'"
+            >
+              <a class="flex flex-col items-center gap-y-3 cursor-pointer">
+                <img
+                  class="max-w-[85px]"
+                  src="https://tapsi.ir/images/home/cc-hamyar.png"
+                  alt="hamyar-icon"
+                />
+                <p class="text-xs">همیار</p>
+              </a>
+            </button>
+
+            <button
+              class="opacity-50"
+              :class="{'active opacity-100': tab === 'cc-hamkhat'}"
+              @click="tab = 'cc-hamkhat'"
+            >
+              <a class="flex flex-col items-center gap-y-3 cursor-pointer">
+                <img
+                  class="max-w-[85px]"
+                  src="https://tapsi.ir/images/home/cc-hamkhat.png"
+                  alt="hamkhat-icon"
+                />
+                <p class="text-xs">همخط</p>
+              </a>
+            </button>
+
+            <button
+              class="opacity-50"
+              :class="{'active opacity-100': tab === 'cc-taxi'}"
+              @click="tab = 'cc-taxi'"
+            >
+              <a class="flex flex-col items-center gap-y-3 cursor-pointer">
+                <img
+                  class="max-w-[85px]"
+                  src="https://tapsi.ir/images/home/cc-taxi.png"
+                  alt="tapsi-taxi-icon"
+                />
+                <p class="text-xs">تاکسی</p>
+              </a>
+            </button>
+
+            <button
+              class="opacity-50"
+              :class="{'active opacity-100': tab === 'cc-line'}"
+              @click="tab = 'cc-line'"
+            >
+              <a class="flex flex-col items-center gap-y-3 cursor-pointer">
+                <img
+                  class="max-w-[85px]"
+                  src="https://tapsi.ir/images/home/cc-line.png"
+                  alt="tapsi-line-icon"
+                />
+                <p class="text-xs">تپسی لاین</p>
+              </a>
+            </button>
+          </div>
+        </section>
+
+        <!-- Services detail section -->
+        <!-- Section1 -->
+        <section
+          x-show="tab === 'cc-classic'"
+          class="w-11/12 mx-auto flex flex-col gap-y-3 lg:flex-row items-center mt-16"
+        >
+          <div class="flex flex-col gap-y-6">
+            <h3 class="font-bold text-xl lg:text-2xl lg:font-medium">
+              تپسی کلاسیک
+            </h3>
+            <p class="text-sm text-justify lg:text-lg lg:w-5/6 leading-normal">
+              با سرویس کلاسیک تپسی، یک خودروی اختصاصی برای رسیدن به مقصدتان
+              دارید. تپسی کلاسیک، راهی سریع و آسان برای سفرهای درون‌شهری در هر
+              ساعتی از روز است. در این سرویس، شما امکان تعیین دو یا چند مقصد و
+              همچنین توقف در مسیر را دارید.
+            </p>
+          </div>
+          <img
+            class="hidden lg:block max-w-md"
+            src="https://tapsi.ir/images/home/illus-classic.webp"
+            alt=""
+          />
+        </section>
+
+        <!-- section2 -->
+        <!-- motopeyk -->
+        <section
+          x-show="tab === 'cc-motopeyk'"
+          class="w-11/12 mx-auto flex-col gap-y-3 items-center mt-16 lg:flex lg:flex-row"
+        >
+          <div class="flex flex-col gap-y-6">
+            <h3 class="font-bold text-xl lg:text-2xl lg:font-medium">
+              موتوپیک
+            </h3>
+            <p class="text-sm text-justify leading-normal lg:text-lg lg:w-5/6">
+              با سرویس کلاسیک تپسی، یک خودروی اختصاصی برای رسیدن به مقصدتان
+              دارید. تپسی کلاسیک، راهی سریع و آسان برای سفرهای درون‌شهری در هر
+              ساعتی از روز است. در این سرویس، شما امکان تعیین دو یا چند مقصد و
+              همچنین توقف در مسیر را دارید.
+            </p>
+          </div>
+          <picture>
+            <source
+              srcset="https://tapsi.ir/images/home/illus-motopeyk.webp"
+              type="image/webp"
+            />
+            <source
+              srcset="https://tapsi.ir/images/home/illus-motopeyk.png"
+              type="image/png"
+            />
+            <img class="hidden lg:block max-w-md" alt="motopeyk" />
+          </picture>
+        </section>
+
+        <!-- section3 -->
+        <!-- autopeyk -->
+        <section
+          x-show="tab === 'cc-autopeyk'"
+          class="w-11/12 mx-auto flex-col gap-y-3 items-center mt-16 lg:flex lg:flex-row"
+        >
+          <div class="flex flex-col gap-y-6">
+            <h3 class="font-bold text-xl lg:text-2xl lg:font-medium">اتوپیک</h3>
+            <p class="text-sm text-justify leading-normal lg:text-lg lg:w-5/6">
+              با سرویس کلاسیک تپسی، یک خودروی اختصاصی برای رسیدن به مقصدتان
+              دارید. تپسی کلاسیک، راهی سریع و آسان برای سفرهای درون‌شهری در هر
+              ساعتی از روز است. در این سرویس، شما امکان تعیین دو یا چند مقصد و
+              همچنین توقف در مسیر را دارید.
+            </p>
+          </div>
+
+          <picture>
+            <source
+              srcset="https://tapsi.ir/images/home/illus-autopeyk.webp"
+              type="image/webp"
+            />
+            <source
+              srcset="https://tapsi.ir/images/home/illus-autopeyk.png"
+              type="image/png"
+            />
+            <img class="hidden lg:block max-w-md" alt="autopeyk" />
+          </picture>
+        </section>
+
+        <!-- section4 -->
+        <!-- plus -->
+        <section
+          x-show="tab === 'cc-plus'"
+          class="w-11/12 mx-auto flex-col gap-y-3 items-center mt-16 lg:flex lg:flex-row"
+        >
+          <div class="flex flex-col gap-y-6">
+            <h3 class="font-bold text-xl lg:text-2xl lg:font-medium">
+              تپسی پلاس
+            </h3>
+            <p class="text-sm text-justify leading-normal lg:text-lg lg:w-5/6">
+              با سرویس کلاسیک تپسی، یک خودروی اختصاصی برای رسیدن به مقصدتان
+              دارید. تپسی کلاسیک، راهی سریع و آسان برای سفرهای درون‌شهری در هر
+              ساعتی از روز است. در این سرویس، شما امکان تعیین دو یا چند مقصد و
+              همچنین توقف در مسیر را دارید.
+            </p>
+          </div>
+          <picture>
+            <source
+              srcset="https://tapsi.ir/images/home/illus-plus.webp"
+              type="image/webp"
+            />
+            <source
+              srcset="https://tapsi.ir/images/home/illus-plus.png"
+              type="image/png"
+            />
+            <img class="hidden max-w-md lg:block" alt="tabsi-plus" />
+          </picture>
+        </section>
+
+        <!-- Section 5 -->
+        <!-- tel -->
+        <section
+          x-show="tab === 'cc-tel'"
+          class="w-11/12 mx-auto flex-col gap-y-3 items-center mt-16 lg:flex lg:flex-row"
+        >
+          <div class="flex flex-col gap-y-6">
+            <h3 class="font-bold text-xl lg:text-2xl lg:font-medium">
+              تپسی تلفنی
+            </h3>
+            <p class="text-sm text-justify leading-normal lg:text-lg lg:w-5/6">
+              با سرویس کلاسیک تپسی، یک خودروی اختصاصی برای رسیدن به مقصدتان
+              دارید. تپسی کلاسیک، راهی سریع و آسان برای سفرهای درون‌شهری در هر
+              ساعتی از روز است. در این سرویس، شما امکان تعیین دو یا چند مقصد و
+              همچنین توقف در مسیر را دارید.
+            </p>
+          </div>
+          <picture>
+            <source
+              srcset="https://tapsi.ir/images/home/illus-tel.webp"
+              type="image/webp"
+            />
+            <source
+              srcset="https://tapsi.ir/images/home/illus-tel.png"
+              type="image/png"
+            />
+            <img class="hidden max-w-md lg:block" alt="tabsi-tel" />
+          </picture>
+        </section>
+
+        <!-- Section6 -->
+        <!-- hamyar -->
+        <section
+          x-show="tab === 'cc-hamyar'"
+          class="w-11/12 mx-auto flex-col gap-y-3 items-center mt-16 lg:flex lg:flex-row"
+        >
+          <div class="flex flex-col gap-y-6">
+            <h3 class="font-bold text-xl lg:text-2xl lg:font-medium">همیار</h3>
+            <p class="text-sm text-justify leading-normal lg:text-lg lg:w-5/6">
+              با سرویس کلاسیک تپسی، یک خودروی اختصاصی برای رسیدن به مقصدتان
+              دارید. تپسی کلاسیک، راهی سریع و آسان برای سفرهای درون‌شهری در هر
+              ساعتی از روز است. در این سرویس، شما امکان تعیین دو یا چند مقصد و
+              همچنین توقف در مسیر را دارید.
+            </p>
+          </div>
+          <picture>
+            <source
+              srcset="https://tapsi.ir/images/home/illus-hamyar.webp"
+              type="image/webp"
+            />
+            <source
+              srcset="https://tapsi.ir/images/home/illus-hamyar.png"
+              type="image/png"
+            />
+            <img class="hidden max-w-md lg:block" alt="tabsi-hamyar" />
+          </picture>
+        </section>
+
+        <!-- Section 7 -->
+        <!-- hamkhat -->
+        <section
+          x-show="tab === 'cc-hamkhat'"
+          class="w-11/12 mx-auto flex-col gap-y-3 items-center mt-16 lg:flex lg:flex-row"
+        >
+          <div class="flex flex-col gap-y-6">
+            <h3 class="font-bold text-xl lg:text-2xl lg:font-medium">همخط</h3>
+            <p class="text-sm text-justify leading-normal lg:text-lg lg:w-5/6">
+              با سرویس کلاسیک تپسی، یک خودروی اختصاصی برای رسیدن به مقصدتان
+              دارید. تپسی کلاسیک، راهی سریع و آسان برای سفرهای درون‌شهری در هر
+              ساعتی از روز است. در این سرویس، شما امکان تعیین دو یا چند مقصد و
+              همچنین توقف در مسیر را دارید.
+            </p>
+          </div>
+          <picture>
+            <source
+              srcset="https://tapsi.ir/images/home/illus-hamkhat.webp"
+              type="image/webp"
+            />
+            <source
+              srcset="https://tapsi.ir/images/home/illus-hamkhat.png"
+              type="image/png"
+            />
+            <img class="hidden max-w-md lg:block" alt="tabsi-hamkhat" />
+          </picture>
+        </section>
+
+        <!-- Section 8 -->
+        <!-- cc-taxi -->
+        <section
+          x-show="tab === 'cc-taxi'"
+          class="w-11/12 mx-auto flex-col gap-y-3 items-center mt-16 lg:flex lg:flex-row"
+        >
+          <div class="flex flex-col gap-y-6">
+            <h3 class="font-bold text-xl lg:text-2xl lg:font-medium">تاکسی</h3>
+            <p class="text-sm text-justify leading-normal lg:text-lg lg:w-5/6">
+              با سرویس کلاسیک تپسی، یک خودروی اختصاصی برای رسیدن به مقصدتان
+              دارید. تپسی کلاسیک، راهی سریع و آسان برای سفرهای درون‌شهری در هر
+              ساعتی از روز است. در این سرویس، شما امکان تعیین دو یا چند مقصد و
+              همچنین توقف در مسیر را دارید.
+            </p>
+          </div>
+          <picture>
+            <source
+              srcset="https://tapsi.ir/images/home/illus-taxi.webp"
+              type="image/webp"
+            />
+            <source
+              srcset="https://tapsi.ir/images/home/illus-taxi.png"
+              type="image/png"
+            />
+            <img class="hidden max-w-md lg:block" alt="tabsi-taxi" />
+          </picture>
+        </section>
+
+        <!-- Section 9 -->
+        <!-- cc-line -->
+        <section
+          x-show="tab === 'cc-line'"
+          class="w-11/12 mx-auto lg:flex flex-col lg:flex-row gap-y-3 items-center mt-16"
+        >
+          <div class="flex flex-col gap-y-6">
+            <h3 class="font-bold text-xl lg:text-2xl lg:font-medium">
+              تپسی آنلاین
+            </h3>
+            <p class="text-sm text-justify lg:text-lg lg:w-5/6 leading-normal">
+              با سرویس کلاسیک تپسی، یک خودروی اختصاصی برای رسیدن به مقصدتان
+              دارید. تپسی کلاسیک، راهی سریع و آسان برای سفرهای درون‌شهری در هر
+              ساعتی از روز است. در این سرویس، شما امکان تعیین دو یا چند مقصد و
+              همچنین توقف در مسیر را دارید.
+            </p>
+          </div>
+          <picture>
+            <source
+              srcset="https://tapsi.ir/images/home/illus-line.webp"
+              type="image/webp"
+            />
+            <source
+              srcset="https://tapsi.ir/images/home/illus-line.png"
+              type="image/png"
+            />
+            <img class="hidden lg:block max-w-md" alt="tabsi-line" />
+          </picture>
+        </section>
+      </div>
+
+      <!-- FEATURE SECTION -->
+      <section
+        class="w-11/12 mx-auto grid grid-cols-1 gap-y-20 lg:grid-cols-2 lg:gap-x-2 mt-20"
+      >
+        <!-- feature-1 -->
+        <div class="flex flex-col gap-y-6 order-1">
+          <h2 class="text-xl lg:text-3xl font-bold lg:font-medium">
+            تپسی پلاس
+          </h2>
+          <p class="text-sm text-justify lg:text-lg leading-relaxed">
+            در این سرویس، خودرویی با مدل بالاتر و عمر کمتر، برای شما ارسال خواهد
+            شد. همچنین ، رانندگان این سرویس بالاترین امتیاز رااز مسافران دریافت
+            کرده‌اند این سرویس که در حال حاضر در تهران فعال است امکان تعیین چند
+            مقصد یا توقف حین سفر وجود دارد.
+          </p>
+        </div>
+        <img
+          src="/assets/image/i-mac-1.png"
+          alt=""
+          class="max-w-md order-2 place-self-center md:place-self-end"
+        />
+
+        <!-- feature-2 -->
+
+        <div class="flex flex-col gap-y-8 order-4 lg:order-3">
+          <h2 class="text-xl lg:text-2xl font-bold lg:font-medium">
+            خدمات تپسی برای کسب و کارها
+          </h2>
+          <p class="text-sm text-justify lg:text-lg leading-normal">
+            در این سرویس، خودرویی با مدل بالاتر و عمر کمتر، برای شما ارسال خواهد
+            شد. همچنین ، رانندگان این سرویس بالاترین امتیاز رااز مسافران دریافت
+            کرده‌اند این سرویس که در حال حاضر در تهران فعال است امکان تعیین چند
+            مقصد یا توقف حین سفر وجود دارد.
+          </p>
+
+          <button
+            class="px-5 py-2 rounded-xl bg-orange-600 text-white text-sm lg:text-base font-bold text-center cursor-pointer self-start focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 focus:ring-offset-white"
+          >
+            ورود و ثبت‌نام پنل سازمانی
+          </button>
+        </div>
+        <img
+          src="/assets/image/i-mac-1.png"
+          alt=""
+          class="max-w-md place-self-center order-3 md:place-self-end lg:order-4"
+        />
+
+        <!-- feature-3 -->
+
+        <div class="flex flex-col gap-y-6 order-6">
+          <h2 class="text-xl lg:text-3xl font-bold lg:font-medium">
+            خدمات تپسی برای کسب و کارها
+          </h2>
+          <p class="text-sm text-justify lg:text-lg leading-relaxed w-full">
+            در این سرویس، خودرویی با مدل بالاتر و عمر کمتر، برای شما ارسال خواهد
+            شد. همچنین ، رانندگان این سرویس بالاترین امتیاز رااز مسافران دریافت
+            کرده‌اند این سرویس که در حال حاضر در تهران فعال است امکان تعیین چند
+            مقصد یا توقف حین سفر وجود دارد.
+          </p>
+          <button
+            type="button"
+            class="px-5 py-2 rounded-2xl bg-orange-600 text-white text-sm lg:text-base font-bold text-center whitespace-nowrap cursor-pointer self-start"
+          >
+            خرید کد اعتبار و تخفیف
+          </button>
+        </div>
+        <img
+          src="/assets/image/i-mac-1.png"
+          alt=""
+          class="order-5 max-w-md place-self-center md:place-self-start"
+        />
+      </section>
+
+      <!-- Card section -->
+      <section
+        class="w-11/12 mx-auto grid grid-cols-1 gap-y-10 justify-items-center md:grid-cols-2 lg:grid-cols-3 mt-16"
+      >
+        <!-- Card1 -->
+        <div
+          class="max-w-sm rounded shadow-xl md:w-11/12 hover:shadow-slate-500 md:transition md:duration-150 md:ease-in-out md:transform md:hover:scale-105"
+        >
+          <!-- Card Header -->
+          <header
+            class="flex flex-col gap-y-7 bg-[#FFA589] rounded-t-3xl px-6 py-6"
+          >
+            <div class="flex items-center justify-between">
+              <span class="text-white text-lg font-medium">عادی</span>
+              <span
+                dir="ltr"
+                class="rounded-3xl bg-white font-medium text-sm border-2 border-orange-600 py-1 px-3 text-orange-600 whitespace-nowrap"
+                >10% OFF
+              </span>
+            </div>
+            <span class="text-white font-medium text-lg whitespace-nowrap">
+              290 هزار/تومان
+            </span>
+            <span class="text-white font-medium text-lg whitespace-nowrap">
+              سرویس ماشین‌های معمولی
+            </span>
+          </header>
+          <!-- Card Body -->
+          <div class="flex flex-col gap-y-5 bg-white rounded-b-lg">
+            <div class="px-7 py-9">
+              <ul
+                class="flex flex-col gap-y-7 font-medium text-lg text-[#444242]"
+              >
+                <li class="flex gap-x-2">
+                  <img class="" src="/assets/image/check-icon.svg" />
+
+                  <span class="p-2 whitespace-nowrap">کیفیت معمولی</span>
+                </li>
+                <li class="flex gap-x-2">
+                  <img class="" src="/assets/image/check-icon.svg" />
+
+                  <span class="p-2 whitespace-nowrap">کیفیت معمولی</span>
+                </li>
+                <li class="flex gap-x-2">
+                  <img class="" src="/assets/image/check-icon.svg" />
+
+                  <span class="p-2 whitespace-nowrap">کیفیت معمولی</span>
+                </li>
+                <li class="flex gap-x-2">
+                  <img class="" src="/assets/image/check-icon.svg" />
+
+                  <span class="p-2 whitespace-nowrap">کیفیت معمولی</span>
+                </li>
+              </ul>
+            </div>
+            <!-- Button -->
+
+            <button
+              class="px-5 py-4 bg-[#FFA589] rounded-lg text-white md:text-lg font-bold text-center whitespace-nowrap cursor-pointer w-4/5 self-center my-10"
+            >
+              ثبت سفارش
+            </button>
+          </div>
+        </div>
+
+        <!-- Card2 -->
+        <div
+          class="max-w-sm rounded shadow-lg md:w-11/12 hover:shadow-slate-500 md:transition md:duration-150 md:ease-in-out md:transform md:hover:scale-105"
+        >
+          <!-- Card Header -->
+          <header
+            class="flex flex-col gap-y-7 bg-[#FF7A50] rounded-t-3xl px-6 py-6"
+          >
+            <div class="flex items-center justify-between">
+              <span class="text-white text-lg font-medium">اقتصادی</span>
+              <span
+                dir="ltr"
+                class="rounded-3xl text-sm font-medium bg-[#FE4E00] px-3 py-1 text-white"
+                >15% OFF
+              </span>
+            </div>
+            <span class="text-white font-medium text-lg whitespace-nowrap">
+              290 هزار/تومان
+            </span>
+            <span class="text-white font-medium text-lg whitespace-nowrap">
+              سرویس ماشین‌های کلاسیک
+            </span>
+          </header>
+          <!-- Card Body -->
+          <div class="flex flex-col gap-y-5 bg-white rounded-b-lg">
+            <div class="px-6 py-9">
+              <ul
+                class="flex flex-col gap-y-7 font-medium text-lg text-[#444242]"
+              >
+                <li class="flex gap-x-2">
+                  <img class="" src="/assets/image/check-icon.svg" />
+
+                  <span class="p-2 whitespace-nowrap">کیفیت معمولی</span>
+                </li>
+                <li class="flex gap-x-2">
+                  <img class="" src="/assets/image/check-icon.svg" />
+
+                  <span class="p-2 whitespace-nowrap">کیفیت معمولی</span>
+                </li>
+                <li class="flex gap-x-2">
+                  <img class="" src="/assets/image/check-icon.svg" />
+
+                  <span class="p-2 whitespace-nowrap">کیفیت معمولی</span>
+                </li>
+                <li class="flex gap-x-2">
+                  <img class="" src="/assets/image/check-icon.svg" />
+
+                  <span class="p-2 whitespace-nowrap">کیفیت معمولی</span>
+                </li>
+              </ul>
+            </div>
+            <!-- Button -->
+
+            <button
+              class="px-5 py-4 bg-[#FF5722] rounded-lg text-white md:text-lg font-bold text-center whitespace-nowrap cursor-pointer w-4/5 self-center my-10"
+            >
+              ثبت سفارش
+            </button>
+          </div>
+        </div>
+
+        <!-- Card3 -->
+        <div
+          class="max-w-sm rounded shadow-lg md:w-11/12 hover:shadow-slate-500 md:transition md:duration-150 md:ease-in-out md:transform md:hover:scale-105"
+        >
+          <!-- Card Header -->
+          <header
+            class="flex flex-col gap-y-7 bg-[#FFA589] rounded-t-3xl px-6 py-6"
+          >
+            <div class="flex items-center justify-between">
+              <span class="text-white text-lg font-medium">ویژه</span>
+              <span
+                dir="ltr"
+                class="rounded-3xl bg-white font-medium text-sm border-2 border-orange-600 py-1 px-3 text-orange-600 whitespace-nowrap"
+                >20% OFF
+              </span>
+            </div>
+            <span class="text-white font-medium text-lg whitespace-nowrap">
+              290 هزار/تومان
+            </span>
+            <span class="text-white font-medium text-lg whitespace-nowrap">
+              سرویس ماشین‌های مدل بالا
+            </span>
+          </header>
+          <!-- Card Body -->
+          <div class="flex flex-col gap-y-5 bg-white rounded-b-lg">
+            <div class="px-7 py-9">
+              <ul
+                class="flex flex-col gap-y-7 font-medium text-lg text-[#444242]"
+              >
+                <li class="flex gap-x-2">
+                  <img class="" src="/assets/image/check-icon.svg" />
+
+                  <span class="p-2 whitespace-nowrap">کیفیت خیلی خفن</span>
+                </li>
+                <li class="flex gap-x-2">
+                  <img class="" src="/assets/image/check-icon.svg" />
+
+                  <span class="p-2 whitespace-nowrap">بی‌سر و صدا</span>
+                </li>
+                <li class="flex gap-x-2">
+                  <img class="" src="/assets/image/check-icon.svg" />
+
+                  <span class="p-2 whitespace-nowrap">زمان نامحدود</span>
+                </li>
+                <li class="flex gap-x-2">
+                  <img class="" src="/assets/image/check-icon.svg" />
+
+                  <span class="p-2 whitespace-nowrap">سرویس نامحدود</span>
+                </li>
+              </ul>
+            </div>
+            <!-- Button -->
+
+            <button
+              class="px-5 py-4 bg-[#FFA589] rounded-lg text-white md:text-lg font-bold text-center whitespace-nowrap cursor-pointer w-4/5 self-center my-10"
+            >
+              ثبت سفارش
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- travelling Section -->
+      <section class="w-11/12 mx-auto mt-28 relative">
+        <div
+          class="flex items-center justify-between overflow-x-auto lg:overflow-hidden gap-x-6"
+          x-show="activeSlide === slide"
+        >
+          <!-- travelSection1 -->
+          <div class="flex-grow-0 flex-shrink-0 basis-72">
+            <!-- image -->
+            <div class="pb-4">
+              <img
+                class="rounded-3xl w-full h-52 object-cover"
+                src="/assets/image/travell.png"
+              />
+            </div>
+
+            <!-- description -->
+            <div
+              class="flex flex-col gap-y-3 justify-between mr-6 rounded-xl shadow-lg bg-white shadow-slate-600 p-4 -translate-y-16 w-4/5 md:w-5/6"
+            >
+              <div class="flex items-center gap-x-2">
+                <span
+                  dir="ltr"
+                  class="rounded-2xl text-xs text-center font-medium bg-[#FE4E00] px-3 pt-1 pb-2 text-white flex-grow-0 flex-shrink-0"
+                  >ویژه
+                </span>
+                <p
+                  class="flex-grow-0 flex-shrink-0 font-bold text-[#7B7B7B] text-xs"
+                >
+                  اقامت رایگان &bull; سفر سه روزه
+                </p>
+              </div>
+              <p class="text-[#524F4F] font-bold">سفر به قلب کویر لوت</p>
+
+              <!-- avatarGroup -->
+              <div class="flex items-center">
+                <div
+                  class="border-[3px] border-white w-12 h-12 rounded-full overflow-hidden cursor-pointer ml-[-20px] transition duration-150 ease-in-out transform hover:translate-x-4"
+                >
+                  <img
+                    class="w-full h-full"
+                    src="/assets/image/avatar1.jpg"
+                    alt=""
+                  />
+                </div>
+                <div
+                  class="border-[3px] border-white w-12 h-12 rounded-full overflow-hidden cursor-pointer ml-[-20px] transition duration-150 ease-in-out transform hover:translate-x-4"
+                >
+                  <img
+                    class="w-full h-full"
+                    src="/assets/image/avatar2.jpg"
+                    alt=""
+                  />
+                </div>
+                <div
+                  class="border-[3px] border-white w-12 h-12 rounded-full overflow-hidden cursor-pointer ml-[-20px] transition duration-150 ease-in-out transform hover:translate-x-4"
+                >
+                  <img
+                    class="w-full h-full"
+                    src="/assets/image/avatar3.jpg"
+                    alt=""
+                  />
+                </div>
+
+                <div
+                  class="z-10 w-12 h-12 rounded-full inline-flex items-center border-[3px] border-white ml-[-20px] bg-orange-600"
+                >
+                  <p class="w-full text-center text-white">10+</p>
+                </div>
+              </div>
+
+              <!--icons  -->
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-x-2">
+                  <span
+                    ><svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                      class="w-5 h-5 fill-orange-600"
+                    >
+                      <path
+                        d="M9.653 16.915l-.005-.003-.019-.01a20.759 20.759 0 01-1.162-.682 22.045 22.045 0 01-2.582-1.9C4.045 12.733 2 10.352 2 7.5a4.5 4.5 0 018-2.828A4.5 4.5 0 0118 7.5c0 2.852-2.044 5.233-3.885 6.82a22.049 22.049 0 01-3.744 2.582l-.019.01-.005.003h-.002a.739.739 0 01-.69.001l-.002-.001z"
+                      />
+                    </svg>
+                  </span>
+                  <p class="text-gray-500">۱۲</p>
+                  <span
+                    ><svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                      class="w-5 h-5 fill-[#cacaca]"
+                    >
+                      <path d="M10 12.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5z" />
+                      <path
+                        fill-rule="evenodd"
+                        d="M.664 10.59a1.651 1.651 0 010-1.186A10.004 10.004 0 0110 3c4.257 0 7.893 2.66 9.336 6.41.147.381.146.804 0 1.186A10.004 10.004 0 0110 17c-4.257 0-7.893-2.66-9.336-6.41zM14 10a4 4 0 11-8 0 4 4 0 018 0z"
+                        clip-rule="evenodd"
+                      />
+                    </svg>
+                  </span>
+                  <p class="text-gray-500">۲۴</p>
+                </div>
+
+                <div class="flex items-center gap-x-2">
+                  <span
+                    ><svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                      class="w-5 h-5 fill-gray-300"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M8.75 1A2.75 2.75 0 006 3.75v.443c-.795.077-1.584.176-2.365.298a.75.75 0 10.23 1.482l.149-.022.841 10.518A2.75 2.75 0 007.596 19h4.807a2.75 2.75 0 002.742-2.53l.841-10.52.149.023a.75.75 0 00.23-1.482A41.03 41.03 0 0014 4.193V3.75A2.75 2.75 0 0011.25 1h-2.5zM10 4c.84 0 1.673.025 2.5.075V3.75c0-.69-.56-1.25-1.25-1.25h-2.5c-.69 0-1.25.56-1.25 1.25v.325C8.327 4.025 9.16 4 10 4zM8.58 7.72a.75.75 0 00-1.5.06l.3 7.5a.75.75 0 101.5-.06l-.3-7.5zm4.34.06a.75.75 0 10-1.5-.06l-.3 7.5a.75.75 0 101.5.06l.3-7.5z"
+                        clip-rule="evenodd"
+                      />
+                    </svg>
+                  </span>
+
+                  <span
+                    ><svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                      class="w-5 h-5 fill-[#cacaca]"
+                    >
+                      <path
+                        d="M5.433 13.917l1.262-3.155A4 4 0 017.58 9.42l6.92-6.918a2.121 2.121 0 013 3l-6.92 6.918c-.383.383-.84.685-1.343.886l-3.154 1.262a.5.5 0 01-.65-.65z"
+                      />
+                      <path
+                        d="M3.5 5.75c0-.69.56-1.25 1.25-1.25H10A.75.75 0 0010 3H4.75A2.75 2.75 0 002 5.75v9.5A2.75 2.75 0 004.75 18h9.5A2.75 2.75 0 0017 15.25V10a.75.75 0 00-1.5 0v5.25c0 .69-.56 1.25-1.25 1.25h-9.5c-.69 0-1.25-.56-1.25-1.25v-9.5z"
+                      />
+                    </svg>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- travelSection2 -->
+          <div class="flex-grow-0 flex-shrink-0 basis-72">
+            <!-- image -->
+            <div class="pb-4">
+              <img
+                class="rounded-3xl w-full h-52 object-cover"
+                src="/assets/image/travell-2.jpg"
+              />
+            </div>
+
+            <!-- description -->
+            <div
+              class="flex flex-col gap-y-3 justify-between mr-6 rounded-xl shadow-lg bg-white shadow-slate-600 p-4 -translate-y-16 w-4/5 md:w-5/6"
+            >
+              <div class="flex items-center gap-x-2">
+                <span
+                  dir="ltr"
+                  class="rounded-2xl text-xs text-center font-medium bg-[#FE4E00] px-3 pt-1 pb-2 text-white flex-grow-0 flex-shrink-0"
+                  >ویژه
+                </span>
+                <p
+                  class="flex-grow-0 flex-shrink-0 font-bold text-[#7B7B7B] text-xs"
+                >
+                  اقامت رایگان &bull; سفر ۴ روزه
+                </p>
+              </div>
+              <p class="text-[#524F4F] font-bold">سفر به اردبیل</p>
+
+              <!-- avatarGroup -->
+              <div class="flex items-center">
+                <div
+                  class="border-[3px] border-white w-12 h-12 rounded-full overflow-hidden cursor-pointer ml-[-20px] transition duration-150 ease-in-out transform hover:translate-x-4"
+                >
+                  <img
+                    class="w-full h-full"
+                    src="/assets/image/avatar1.jpg"
+                    alt=""
+                  />
+                </div>
+                <div
+                  class="border-[3px] border-white w-12 h-12 rounded-full overflow-hidden cursor-pointer ml-[-20px] transition duration-150 ease-in-out transform hover:translate-x-4"
+                >
+                  <img
+                    class="w-full h-full"
+                    src="/assets/image/avatar2.jpg"
+                    alt=""
+                  />
+                </div>
+                <div
+                  class="border-[3px] border-white w-12 h-12 rounded-full overflow-hidden cursor-pointer ml-[-20px] transition duration-150 ease-in-out transform hover:translate-x-4"
+                >
+                  <img
+                    class="w-full h-full"
+                    src="/assets/image/avatar3.jpg"
+                    alt=""
+                  />
+                </div>
+
+                <div
+                  class="z-10 w-12 h-12 rounded-full inline-flex items-center border-[3px] border-white ml-[-20px] bg-gray-400"
+                >
+                  <p class="w-full text-center text-white">20+</p>
+                </div>
+              </div>
+              <!--icons  -->
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-x-2">
+                  <span
+                    ><svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                      class="w-5 h-5 fill-[#cacaca]"
+                    >
+                      <path
+                        d="M9.653 16.915l-.005-.003-.019-.01a20.759 20.759 0 01-1.162-.682 22.045 22.045 0 01-2.582-1.9C4.045 12.733 2 10.352 2 7.5a4.5 4.5 0 018-2.828A4.5 4.5 0 0118 7.5c0 2.852-2.044 5.233-3.885 6.82a22.049 22.049 0 01-3.744 2.582l-.019.01-.005.003h-.002a.739.739 0 01-.69.001l-.002-.001z"
+                      />
+                    </svg>
+                  </span>
+                  <span class="text-gray-500">۱۶</span>
+                  <span
+                    ><svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                      class="w-5 h-5 fill-[#cacaca]"
+                    >
+                      <path d="M10 12.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5z" />
+                      <path
+                        fill-rule="evenodd"
+                        d="M.664 10.59a1.651 1.651 0 010-1.186A10.004 10.004 0 0110 3c4.257 0 7.893 2.66 9.336 6.41.147.381.146.804 0 1.186A10.004 10.004 0 0110 17c-4.257 0-7.893-2.66-9.336-6.41zM14 10a4 4 0 11-8 0 4 4 0 018 0z"
+                        clip-rule="evenodd"
+                      />
+                    </svg>
+                  </span>
+                  <span class="text-gray-500">۳۴</span>
+                </div>
+
+                <div class="flex items-center gap-x-2">
+                  <span
+                    ><svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                      class="w-5 h-5 fill-[#cacaca]"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M8.75 1A2.75 2.75 0 006 3.75v.443c-.795.077-1.584.176-2.365.298a.75.75 0 10.23 1.482l.149-.022.841 10.518A2.75 2.75 0 007.596 19h4.807a2.75 2.75 0 002.742-2.53l.841-10.52.149.023a.75.75 0 00.23-1.482A41.03 41.03 0 0014 4.193V3.75A2.75 2.75 0 0011.25 1h-2.5zM10 4c.84 0 1.673.025 2.5.075V3.75c0-.69-.56-1.25-1.25-1.25h-2.5c-.69 0-1.25.56-1.25 1.25v.325C8.327 4.025 9.16 4 10 4zM8.58 7.72a.75.75 0 00-1.5.06l.3 7.5a.75.75 0 101.5-.06l-.3-7.5zm4.34.06a.75.75 0 10-1.5-.06l-.3 7.5a.75.75 0 101.5.06l.3-7.5z"
+                        clip-rule="evenodd"
+                      />
+                    </svg>
+                  </span>
+
+                  <span
+                    ><svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                      class="w-5 h-5 fill-[#cacaca]"
+                    >
+                      <path
+                        d="M5.433 13.917l1.262-3.155A4 4 0 017.58 9.42l6.92-6.918a2.121 2.121 0 013 3l-6.92 6.918c-.383.383-.84.685-1.343.886l-3.154 1.262a.5.5 0 01-.65-.65z"
+                      />
+                      <path
+                        d="M3.5 5.75c0-.69.56-1.25 1.25-1.25H10A.75.75 0 0010 3H4.75A2.75 2.75 0 002 5.75v9.5A2.75 2.75 0 004.75 18h9.5A2.75 2.75 0 0017 15.25V10a.75.75 0 00-1.5 0v5.25c0 .69-.56 1.25-1.25 1.25h-9.5c-.69 0-1.25-.56-1.25-1.25v-9.5z"
+                      />
+                    </svg>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- travelSection3 -->
+          <div class="flex-grow-0 flex-shrink-0 basis-72">
+            <!-- image -->
+            <div class="pb-4">
+              <img
+                class="rounded-3xl w-full h-52 object-cover"
+                src="/assets/image/travell-3.jpg"
+              />
+            </div>
+
+            <!-- description -->
+            <div
+              class="flex flex-col gap-y-3 justify-between mr-6 rounded-xl shadow-lg bg-white shadow-slate-600 p-4 -translate-y-16 w-4/5 md:w-5/6"
+            >
+              <div class="flex items-center gap-x-2">
+                <span
+                  dir="ltr"
+                  class="rounded-2xl text-xs text-center font-medium bg-[#FE4E00] px-3 pt-1 pb-2 text-white flex-grow-0 flex-shrink-0"
+                  >ویژه
+                </span>
+                <p
+                  class="flex-grow-0 flex-shrink-0 font-bold text-[#7B7B7B] text-xs"
+                >
+                  اقامت رایگان &bull; سفر ۴ روزه
+                </p>
+              </div>
+              <p class="text-[#524F4F] font-bold">سفر به ماسال</p>
+
+              <!-- avatarGroup -->
+              <div class="flex items-center">
+                <div
+                  class="border-[3px] border-white w-12 h-12 rounded-full overflow-hidden cursor-pointer ml-[-20px] transition duration-150 ease-in-out transform hover:translate-x-4"
+                >
+                  <img
+                    class="w-full h-full"
+                    src="/assets/image/avatar1.jpg"
+                    alt=""
+                  />
+                </div>
+                <div
+                  class="border-[3px] border-white w-12 h-12 rounded-full overflow-hidden cursor-pointer ml-[-20px] transition duration-150 ease-in-out transform hover:translate-x-4"
+                >
+                  <img
+                    class="w-full h-full"
+                    src="/assets/image/avatar2.jpg"
+                    alt=""
+                  />
+                </div>
+                <div
+                  class="border-[3px] border-white w-12 h-12 rounded-full overflow-hidden cursor-pointer ml-[-20px] transition duration-150 ease-in-out transform hover:translate-x-4"
+                >
+                  <img
+                    class="w-full h-full"
+                    src="/assets/image/avatar3.jpg"
+                    alt=""
+                  />
+                </div>
+
+                <div
+                  class="z-10 w-12 h-12 rounded-full inline-flex items-center border-[3px] border-white ml-[-20px] bg-gray-400"
+                >
+                  <p class="w-full text-center text-white">10+</p>
+                </div>
+              </div>
+              <!--icons  -->
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-x-2">
+                  <span
+                    ><svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                      class="w-5 h-5 fill-[#cacaca]"
+                    >
+                      <path
+                        d="M9.653 16.915l-.005-.003-.019-.01a20.759 20.759 0 01-1.162-.682 22.045 22.045 0 01-2.582-1.9C4.045 12.733 2 10.352 2 7.5a4.5 4.5 0 018-2.828A4.5 4.5 0 0118 7.5c0 2.852-2.044 5.233-3.885 6.82a22.049 22.049 0 01-3.744 2.582l-.019.01-.005.003h-.002a.739.739 0 01-.69.001l-.002-.001z"
+                      />
+                    </svg>
+                  </span>
+                  <span class="text-gray-400">۱۰</span>
+                  <span
+                    ><svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                      class="w-5 h-5 fill-[#cacaca]"
+                    >
+                      <path d="M10 12.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5z" />
+                      <path
+                        fill-rule="evenodd"
+                        d="M.664 10.59a1.651 1.651 0 010-1.186A10.004 10.004 0 0110 3c4.257 0 7.893 2.66 9.336 6.41.147.381.146.804 0 1.186A10.004 10.004 0 0110 17c-4.257 0-7.893-2.66-9.336-6.41zM14 10a4 4 0 11-8 0 4 4 0 018 0z"
+                        clip-rule="evenodd"
+                      />
+                    </svg>
+                  </span>
+                  <span class="text-gray-400">۵</span>
+                </div>
+
+                <div class="flex items-center gap-x-2">
+                  <span
+                    ><svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                      class="w-5 h-5 fill-[#cacaca]"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M8.75 1A2.75 2.75 0 006 3.75v.443c-.795.077-1.584.176-2.365.298a.75.75 0 10.23 1.482l.149-.022.841 10.518A2.75 2.75 0 007.596 19h4.807a2.75 2.75 0 002.742-2.53l.841-10.52.149.023a.75.75 0 00.23-1.482A41.03 41.03 0 0014 4.193V3.75A2.75 2.75 0 0011.25 1h-2.5zM10 4c.84 0 1.673.025 2.5.075V3.75c0-.69-.56-1.25-1.25-1.25h-2.5c-.69 0-1.25.56-1.25 1.25v.325C8.327 4.025 9.16 4 10 4zM8.58 7.72a.75.75 0 00-1.5.06l.3 7.5a.75.75 0 101.5-.06l-.3-7.5zm4.34.06a.75.75 0 10-1.5-.06l-.3 7.5a.75.75 0 101.5.06l.3-7.5z"
+                        clip-rule="evenodd"
+                      />
+                    </svg>
+                  </span>
+
+                  <span
+                    ><svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                      class="w-5 h-5 fill-[#cacaca]"
+                    >
+                      <path
+                        d="M5.433 13.917l1.262-3.155A4 4 0 017.58 9.42l6.92-6.918a2.121 2.121 0 013 3l-6.92 6.918c-.383.383-.84.685-1.343.886l-3.154 1.262a.5.5 0 01-.65-.65z"
+                      />
+                      <path
+                        d="M3.5 5.75c0-.69.56-1.25 1.25-1.25H10A.75.75 0 0010 3H4.75A2.75 2.75 0 002 5.75v9.5A2.75 2.75 0 004.75 18h9.5A2.75 2.75 0 0017 15.25V10a.75.75 0 00-1.5 0v5.25c0 .69-.56 1.25-1.25 1.25h-9.5c-.69 0-1.25-.56-1.25-1.25v-9.5z"
+                      />
+                    </svg>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- travelSection4 -->
+          <div class="flex-grow-0 flex-shrink-0 basis-72">
+            <!-- image -->
+            <div class="pb-4">
+              <img
+                class="rounded-3xl w-full h-52 object-cover"
+                src="/assets/image/travell-4.jpg"
+              />
+            </div>
+
+            <!-- description -->
+            <div
+              class="flex flex-col gap-y-3 justify-between mr-6 rounded-xl shadow-lg bg-white shadow-slate-600 p-4 -translate-y-16 w-4/5 md:w-5/6"
+            >
+              <div class="flex items-center gap-x-2">
+                <span
+                  dir="ltr"
+                  class="rounded-2xl text-xs text-center font-medium bg-[#FE4E00] px-3 pt-1 pb-2 text-white flex-grow-0 flex-shrink-0"
+                  >ویژه
+                </span>
+                <p
+                  class="flex-grow-0 flex-shrink-0 font-bold text-[#7B7B7B] text-xs"
+                >
+                  اقامت رایگان &bull; سفر ۵ روزه
+                </p>
+              </div>
+              <p class="text-[#524F4F] font-bold">سفر به جنوب غربی ایران</p>
+              <!-- avatarGroup -->
+              <div class="flex items-center">
+                <div
+                  class="border-[3px] border-white w-12 h-12 rounded-full overflow-hidden cursor-pointer ml-[-20px] transition duration-150 ease-in-out transform hover:translate-x-4"
+                >
+                  <img
+                    class="w-full h-full"
+                    src="/assets/image/avatar1.jpg"
+                    alt=""
+                  />
+                </div>
+                <div
+                  class="border-[3px] border-white w-12 h-12 rounded-full overflow-hidden cursor-pointer ml-[-20px] transition duration-150 ease-in-out transform hover:translate-x-4"
+                >
+                  <img
+                    class="w-full h-full"
+                    src="/assets/image/avatar2.jpg"
+                    alt=""
+                  />
+                </div>
+                <div
+                  class="border-[3px] border-white w-12 h-12 rounded-full overflow-hidden cursor-pointer ml-[-20px] transition duration-150 ease-in-out transform hover:translate-x-4"
+                >
+                  <img
+                    class="w-full h-full"
+                    src="/assets/image/avatar3.jpg"
+                    alt=""
+                  />
+                </div>
+
+                <div
+                  class="z-10 w-12 h-12 rounded-full inline-flex items-center border-[3px] border-white ml-[-20px] bg-gray-400"
+                >
+                  <p class="w-full text-center text-white">20+</p>
+                </div>
+              </div>
+
+              <!--icons  -->
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-x-2">
+                  <span
+                    ><svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                      class="w-5 h-5 fill-[#cacaca]"
+                    >
+                      <path
+                        d="M9.653 16.915l-.005-.003-.019-.01a20.759 20.759 0 01-1.162-.682 22.045 22.045 0 01-2.582-1.9C4.045 12.733 2 10.352 2 7.5a4.5 4.5 0 018-2.828A4.5 4.5 0 0118 7.5c0 2.852-2.044 5.233-3.885 6.82a22.049 22.049 0 01-3.744 2.582l-.019.01-.005.003h-.002a.739.739 0 01-.69.001l-.002-.001z"
+                      />
+                    </svg>
+                  </span>
+                  <span class="text-gray-500">۲۵</span>
+                  <span
+                    ><svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                      class="w-5 h-5 fill-[#cacaca]"
+                    >
+                      <path d="M10 12.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5z" />
+                      <path
+                        fill-rule="evenodd"
+                        d="M.664 10.59a1.651 1.651 0 010-1.186A10.004 10.004 0 0110 3c4.257 0 7.893 2.66 9.336 6.41.147.381.146.804 0 1.186A10.004 10.004 0 0110 17c-4.257 0-7.893-2.66-9.336-6.41zM14 10a4 4 0 11-8 0 4 4 0 018 0z"
+                        clip-rule="evenodd"
+                      />
+                    </svg>
+                  </span>
+                  <span class="text-gray-500">۴۴</span>
+                </div>
+
+                <div class="flex items-center gap-x-2">
+                  <span
+                    ><svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                      class="w-5 h-5 fill-[#cacaca]"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M8.75 1A2.75 2.75 0 006 3.75v.443c-.795.077-1.584.176-2.365.298a.75.75 0 10.23 1.482l.149-.022.841 10.518A2.75 2.75 0 007.596 19h4.807a2.75 2.75 0 002.742-2.53l.841-10.52.149.023a.75.75 0 00.23-1.482A41.03 41.03 0 0014 4.193V3.75A2.75 2.75 0 0011.25 1h-2.5zM10 4c.84 0 1.673.025 2.5.075V3.75c0-.69-.56-1.25-1.25-1.25h-2.5c-.69 0-1.25.56-1.25 1.25v.325C8.327 4.025 9.16 4 10 4zM8.58 7.72a.75.75 0 00-1.5.06l.3 7.5a.75.75 0 101.5-.06l-.3-7.5zm4.34.06a.75.75 0 10-1.5-.06l-.3 7.5a.75.75 0 101.5.06l.3-7.5z"
+                        clip-rule="evenodd"
+                      />
+                    </svg>
+                  </span>
+
+                  <span
+                    ><svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                      class="w-5 h-5 fill-[#cacaca]"
+                    >
+                      <path
+                        d="M5.433 13.917l1.262-3.155A4 4 0 017.58 9.42l6.92-6.918a2.121 2.121 0 013 3l-6.92 6.918c-.383.383-.84.685-1.343.886l-3.154 1.262a.5.5 0 01-.65-.65z"
+                      />
+                      <path
+                        d="M3.5 5.75c0-.69.56-1.25 1.25-1.25H10A.75.75 0 0010 3H4.75A2.75 2.75 0 002 5.75v9.5A2.75 2.75 0 004.75 18h9.5A2.75 2.75 0 0017 15.25V10a.75.75 0 00-1.5 0v5.25c0 .69-.56 1.25-1.25 1.25h-9.5c-.69 0-1.25-.56-1.25-1.25v-9.5z"
+                      />
+                    </svg>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Driver Selection -->
+      <section class="w-5/6 mx-auto flex flex-col gap-y-8 mt-28">
+        <div>
+          <h2 class="font-bold text-2xl">انتخاب راننده</h2>
+        </div>
+        <div class="flex flex-col gap-y-4 items-center md:justify-center md:flex-row">
+          <div
+            class="w-full md:basis-6/12 flex items-center gap-x-10 border-2 rounded-3xl border-gray-500 px-5 py-3"
+          >
+            <input
+              id="type-a"
+              type="radio"
+              value=""
+              name="driverSelection"
+              class="peer cursor-pointer w-6 h-6 text-orange-600 focus:ring-orange-600 focus:ring-2 form-radio border-2 mr-5 shadow-lg shadow-gray-500"
+            />
+            <label
+              class="block text-gray-400 w-full font-bold text-xl text-center peer-checked:text-black"
+              for="type-a"
+              >عمومی</label
+            >
+          </div>
+          <div
+            class="w-full md:basis-6/12  md:mr-4 flex items-center gap-x-10 border-2 rounded-3xl border-gray-500 px-5 py-3"
+          >
+            <input
+              class="peer cursor-pointer form-radio border-2 w-6 h-6 mr-5 shadow-lg shadow-slate-500 text-orange-600 focus:ring-orange-600 focus:ring-2"
+              type="radio"
+              name="driverSelection"
+              id="type-b"
+            />
+            <label
+              class="block text-slate-400 w-full font-bold text-xl text-center peer-checked:text-black"
+              for="type-b"
+              >خصوصی</label
+            >
+          </div>
+        </div>
+      </section>
+
+      <!-- Accordion -->
+
+      <section
+        class="w-5/6 mx-auto p-3 mt-28"
+        x-data="{
+        resumes: [
+            {
+                header: 'سابقه کاری',
+                content: 'لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد، تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی الخصوص طراحان خلاقی، و فرهنگ پیشرو در زبان فارسی ایجاد کرد، در این صورت می توان امید داشت که تمام و دشواری موجود در ارائه راهکارها، و شرایط سخت تایپ به پایان رسد و زمان مورد نیاز شامل حروفچینی دستاوردهای اصلی، و جوابگوی سوالات پیوسته اهل دنیای موجود طراحی اساسا مورد استفاده قرار گیرد.',
+                isOpen: false,
+            },
+            {
+                header: 'سابقه تحصیلی',
+                content: 'لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد. کتابهای زیادی در شصت و سه درصد گذشته، حال و آینده شناخت فراوان جامعه و متخصصان را می طلبد تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی الخصوص طراحان خلاقی و فرهنگ پیشرو در زبان فارسی ایجاد کرد. در این صورت می توان امید داشت که تمام و دشواری موجود در ارائه راهکارها و شرایط سخت تایپ به پایان رسد وزمان مورد نیاز شامل حروفچینی دستاوردهای اصلی و جوابگوی سوالات پیوسته اهل دنیای موجود طراحی اساسا مورد استفاده قرار گیرد.',
+                isOpen: false,
+            },
+            {
+                header: 'زبان‌های مسلط',
+                content: 'لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد. کتابهای زیادی در شصت و سه درصد گذشته، حال و آینده شناخت فراوان جامعه و متخصصان را می طلبد تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی الخصوص طراحان خلاقی و فرهنگ پیشرو در زبان فارسی ایجاد کرد. در این صورت می توان امید داشت که تمام و دشواری موجود در ارائه راهکارها و شرایط سخت تایپ به پایان رسد وزمان مورد نیاز شامل حروفچینی دستاوردهای اصلی و جوابگوی سوالات پیوسته اهل دنیای موجود طراحی اساسا مورد استفاده قرار گیرد.',
+                isOpen: false,
+            },
+        ]
+    }"
+      >
+        <h2 class="text-2xl font-bold">سوابق راننده</h2>
+        <div class="leading-loose text-lg mt-8">
+          <template x-for="(r, index) in resumes" :key="index">
+            <div>
+              <button
+                class="w-full font-bold py-3 flex justify-between items-center mt-6"
+                :class="'border-b border-gray-400'"
+                @click="resumes = resumes.map(f => ({ ...f, isOpen: f.header !== r.header ? false : !f.isOpen}))"
+              >
+                <div x-text="r.header"></div>
+                <svg
+                  x-show="!r.isOpen"
+                  class="fill-orange-600"
+                  viewBox="0 0 24 24"
+                  width="24"
+                  height="24"
+                >
+                  <path
+                    class="heroicon-ui"
+                    d="M12 22a10 10 0 110-20 10 10 0 010 20zm0-2a8 8 0 100-16 8 8 0 000 16zm1-9h2a1 1 0 010 2h-2v2a1 1 0 01-2 0v-2H9a1 1 0 010-2h2V9a1 1 0 012 0v2z"
+                  />
+                </svg>
+                <svg
+                  x-show="r.isOpen"
+                  class="fill-orange-600"
+                  viewBox="0 0 24 24"
+                  width="24"
+                  height="24"
+                >
+                  <path
+                    class="heroicon-ui"
+                    d="M12 22a10 10 0 110-20 10 10 0 010 20zm0-2a8 8 0 100-16 8 8 0 000 16zm4-8a1 1 0 01-1 1H9a1 1 0 010-2h6a1 1 0 011 1z"
+                  />
+                </svg>
+              </button>
+
+              <div
+                class="text-gray-700 text-sm mt-2 text-justify leading-normal"
+                x-text="r.content"
+                x-show="r.isOpen"
+              ></div>
+            </div>
+          </template>
+        </div>
+      </section>
+
+      <!-- Contact us section -->
+      <div class="w-11/12 mx-auto flex flex-col items-center gap-y-6 mt-20">
+        <span class="font-bold text-2xl">ارتباط با ما </span>
+        <span class="font-medium text-xl w-72 text-center leading-9"
+          >شما می‌توانید نظرات و پیشنهادات خود را برای من بفرستید</span
+        >
+      </div>
+      <section
+        class="w-11/12 mx-auto grid grid-cols-1 gap-y-8 lg:gap-y-14 lg:grid-cols-4 lg:grid-rows-[100px_minmax(500px,_1fr)_100px] place-items-center mt-10 lg:mt-20"
+      >
+        <div
+          class="flex flex-row-reverse items-center place-self-end md:place-self-center gap-x-5 md:flex-col md:gap-y-5"
+        >
+          <svg class="w-9 h-9 cursor-pointer">
+            <use xlink:href="/assets/image/svg-sprite.svg#Calling"></use>
+          </svg>
+          <span class="text-xs md:text-sm md:self-center"> 0918123789</span>
+        </div>
+
+        <div
+          class="flex gap-x-5 flex-row-reverse items-center place-self-end md:place-self-center md:flex-col md:gap-y-3"
+        >
+          <svg class="w-9 h-9 cursor-pointer md:self-center">
+            <use xlink:href="/assets/image/svg-sprite.svg#Message"></use>
+          </svg>
+          <span class="text-xs md:self-center md:text-sm"> a@gmail</span>
+        </div>
+        <div
+          class="flex flex-row-reverse gap-x-5 items-center place-self-end md:place-self-center md:flex-col md:gap-y-5"
+        >
+          <svg class="w-9 h-9 cursor-pointer md:self-center">
+            <use xlink:href="/assets/image/svg-sprite.svg#Location"></use>
+          </svg>
+          <span class="text-xs md:text-sm whitespace-nowrap self-center"
+            >ایران-کردستان-سنندج خیابان۲۱-کوچه ۱۰۱</span
+          >
+        </div>
+        <div
+          class="flex flex-col gap-y-14 w-full items-center lg:row-span-3 lg:col-start-4 lg:col-end-4"
+        >
+          <span class="lg:text-2xl lg:font-medium">نظرات شما</span>
+          <form class="flex flex-col gap-y-14">
+            <input
+              class="form-input px-4 py-3 rounded-md focus:ring-orange-600 focus:border-orange-600"
+              type="text"
+              placeholder="نام و نام خانوادگی"
+            />
+            <input
+              class="form-input px-4 py-3 rounded-md text-left focus:ring-orange-600 focus:border-orange-600"
+              type="email"
+              placeholder="ایمیل خود را وارد نمایید"
+            />
+            <textarea
+              class="focus:ring-orange-600 focus:border-orange-600"
+              name=""
+              id=""
+              cols="30"
+              rows="10"
+            ></textarea>
+            <button
+              class="form-input self-center px-4 py-3 inline-flex w-full justify-center items-center rounded-full bg-orange-600 border-none text-white focus:ring-orange-400 focus:ring-offset-2 focus:ring-offset-white"
+              type="submit"
+            >
+              ثبت نظر
+            </button>
+          </form>
+        </div>
+
+        <div class="hidden lg:inline-flex lg:col-span-3 w-full overflow-hidden">
+          <img class="w-11/12" src="/assets/image/map.png" />
+        </div>
+
+        <div
+          class="flex flex-row-reverse gap-x-8 order-first lg:order-last lg:w-4/6 lg:justify-between lg:row-start-3 lg:row-end-3 lg:col-start-3 lg:col-end-3"
+        >
+          <svg class="w-9 h-9 cursor-pointer md:self-center">
+            <use xlink:href="/assets/image/svg-sprite.svg#twitter"></use>
+          </svg>
+          <svg class="w-9 h-9 cursor-pointer md:self-center">
+            <use xlink:href="/assets/image/svg-sprite.svg#linkedin"></use>
+          </svg>
+          <svg class="w-9 h-9 cursor-pointer md:self-center">
+            <use xlink:href="/assets/image/svg-sprite.svg#telegram"></use>
+          </svg>
+        </div>
+      </section>
+
+      <!-- Footer Section -->
+
+      <footer class="w-11/12 mx-auto bg-black h-70 py-8 mt-20">
+        <div
+          class="w-11/12 mx-auto flex flex-col gap-y-10 py-5 flex-wrap lg:py-5 lg:justify-between lg:flex-row"
+        >
+          <div class="flex flex-col gap-y-2">
+            <h6 class="text-white font-bold lg:text-sm">تپسی</h6>
+            <a class="block text-white lg:text-sm whitespace-normal" href="#"
+              >وبلاگ تپسی</a
+            >
+            <a class="block text-white lg:text-sm whitespace-normal" href="#"
+              >فرصت شغلی</a
+            >
+            <a class="block text-white lg:text-sm whitespace-normal" href="#"
+              >تماس با ما</a
+            >
+            <a class="block text-white lg:text-sm" href="#"
+              >لوگو و هویت سازمانی</a
+            >
+          </div>
+          <div class="flex flex-col gap-y-2">
+            <h6 class="text-white font-bold lg:text-sm">تپسی</h6>
+            <a class="block text-white lg:text-sm whitespace-normal" href="#"
+              >وبلاگ تپسی</a
+            >
+            <a class="block text-white lg:text-sm whitespace-normal" href="#"
+              >فرصت شغلی</a
+            >
+            <a class="block text-white lg:text-sm whitespace-normal" href="#"
+              >تماس با ما</a
+            >
+            <a class="block text-white lg:text-sm whitespace-normal" href="#"
+              >لوگو و هویت سازمانی</a
+            >
+          </div>
+          <div class="flex flex-col gap-y-2">
+            <h6 class="text-white font-bold lg:text-sm">مسافران</h6>
+            <a class="block text-white lg:text-sm whitespace-normal" href="#"
+              >دانلود اپ سفر</a
+            >
+            <a class="block text-white lg:text-sm whitespace-normal" href="#"
+              >نسخه وب تپسی</a
+            >
+            <a class="block text-white lg:text-sm whitespace-normal" href="#"
+              >پرسش‌های متداول مسافران</a
+            >
+            <a class="block text-white lg:text-sm whitespace-normal" href="#"
+              >باشگاه مشتریان</a
+            >
+          </div>
+          <div class="flex flex-col gap-y-2">
+            <h6 class="text-white font-bold lg:text-sm">رانندگان</h6>
+            <a class="block text-white lg:text-sm whitespace-normal" href="#">
+              ثبت‌نام راننده تاکسی اینترنتی</a
+            >
+            <a class="block text-white lg:text-sm whitespace-normal" href="#"
+              >دانلود اپ سفیر
+            </a>
+            <a class="block text-white lg:text-sm whitespace-normal" href="#"
+              >پرسش‌های متداول سفیران</a
+            >
+            <a class="block text-white lg:text-sm whitespace-normal" href="#"
+              >باشگاه مشتریان</a
+            >
+          </div>
+          <div class="flex flex-col gap-y-2">
+            <h6 class="text-white font-bold lg:text-sm">کسب و کارها</h6>
+            <a class="block text-white lg:text-sm whitespace-normal" href="#"
+              >پنل سازمانی تپسی
+            </a>
+            <a class="block text-white lg:text-sm whitespace-normal" href="#"
+              >خرید کد اعتبار و تخفیف
+            </a>
+            <a class="block text-white lg:text-sm whitespace-normal" href="#"
+              >دریافت API</a
+            >
+            <a class="block text-white lg:text-sm whitespace-normal" href="#"
+              >شرایط و قوانین</a
+            >
+          </div>
+          <div class="flex gap-2 flex-wrap place-content-center">
+            <img
+              class="bg-white py-3 rounded"
+              src="/assets/image/enemad.png"
+              alt=""
+            />
+            <img
+              class="bg-white py-3 rounded"
+              src="/assets/image/enemad.png"
+              alt=""
+            />
+            <img
+              class="bg-white py-3 rounded"
+              src="/assets/image/enemad.png"
+              alt=""
+            />
+          </div>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>
